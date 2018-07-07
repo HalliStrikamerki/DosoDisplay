@@ -1,0 +1,136 @@
+﻿using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.IO;
+using System.Threading;
+using System.Windows;
+using System.Windows.Threading;
+
+namespace DosoDisplay
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            FillList();
+
+            GetFileList();
+
+            Slideshow();
+
+            List_Timer();
+        }
+
+        public static string[] filePaths;
+        public static int max;
+        public static int curr;
+        
+
+        public void GetFileList()
+        {
+            filePaths = Directory.GetFiles(@"z:\");
+            max = filePaths.Length;
+            curr = 0;
+            //MessageBox.Show(filePaths[0].ToString());
+        }
+
+       
+        public void Slideshow()
+        {
+
+            curr++;
+            if (curr >= max) { GetFileList(); }
+
+            try
+            {
+                me_slideshow.Source = new Uri(filePaths[curr]);
+                me_slideshow.LoadedBehavior = System.Windows.Controls.MediaState.Manual;
+                me_slideshow.Play();
+            }
+            catch (Exception) {  }
+           
+            
+        }
+
+        private void me_slideshow_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            curr++;
+            if (curr >= max) { GetFileList(); }
+            //me_slideshow.Source = new Uri(@"c:\test\2.mp4");
+            try
+            {
+                me_slideshow.Source = new Uri(filePaths[curr]);
+                me_slideshow.LoadedBehavior = System.Windows.Controls.MediaState.Manual;
+                
+                me_slideshow.Play();
+            }
+            catch (Exception) { Slideshow(); }
+        }
+
+            public void List_Timer()
+        {
+            InitializeComponent();
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(5);
+            timer.Tick += timer_Tick;
+            timer.Start();
+        }
+
+        void timer_Tick(object sender, EventArgs e)
+        {
+            FillList();
+        }
+
+
+        
+
+        public void FillList()
+        {
+
+            //SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["IceLinkWareHouseConnectionString"].ToString());
+            SqlConnection conn = new SqlConnection(@"Data Source=localhost\sqlexpress;Initial Catalog=IceLinkWareHouse;Integrated Security=True");
+
+            SqlCommand command = new SqlCommand("SET ARITHABORT OFF " +
+                                                "SET ANSI_WARNINGS OFF " +
+                                                "Select h.CustomerName as 'Viðskiptavinur                                     -', " +
+                                                "s.Text as 'Staða         -', " +
+                                                "cast(round(sum(l.Picked) / (sum(l.ToPick) + 0.001) * 100, 0) as int) as '%      -', " +
+                                                "MAX(l.Colour) as 'Litun' " +
+                                                "from " +                                              
+                                                "IceLink_Headers h inner join IceLink_Lines l on h.HeaderNo = l.HeaderNo " +
+                                                "left outer join IceLink_StatusText s on h.Status = s.ID " +
+                                                "where " +
+                                                "type = 3 and " +
+                                                "Status < 3 and " +
+                                                "Priority > 0 " +
+                                                "group by " +
+                                                "h.HeaderNo, " +
+                                                "h.CustomerName, " +
+                                                "s.Text, " +
+                                                "h.Status, " +
+                                                "h.DeliveryDate " +
+                                                "--l.Colour " +
+                                                "--order by h.DeliveryDate desc "
+                                                , conn);
+
+            //command.Parameters.Add(new SqlParameter("BIN", "%" + inp_Bin.Text + "%"));
+            //command.Parameters.Add(new SqlParameter("ITEMNAME", "%" + inp_ItemName.Text + "%"));
+            //command.Parameters.Add(new SqlParameter("ITEMNO", "%" + inp_ItemNo.Text + "%"));
+
+
+            DataTable dt = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(command);
+            adapter.Fill(dt);
+            this.GridViewListDoso.ItemsSource = dt.AsDataView();
+
+
+        }
+
+       
+    }
+}

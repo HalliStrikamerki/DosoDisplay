@@ -1,0 +1,30 @@
+﻿<Window x:Class="DosoDisplay.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DosoDisplay"
+        mc:Ignorable="d"
+        Title="MainWindow" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowState="Maximized" Height="1024" Width="1920">
+    <Grid Background="#FF737373">
+        <Image Margin="-10,817,10,100" Source="logo2.jpg" Stretch="Fill"/>
+        <DataGrid x:Name="GridViewListDoso" Margin="50,44,949,66" BorderBrush="#FF979797" Background="#FFD8D8D8" BorderThickness="5" VerticalGridLinesBrush="#FF6C6C6C" HorizontalGridLinesBrush="#FF9C5252" AlternatingRowBackground="PowderBlue" AlternationCount="1" IsHitTestVisible="True" IsTextSearchEnabled="True" FontSize="30" IsReadOnly="True" FontFamily="Arial" >
+            <DataGrid.Effect>
+                <DropShadowEffect BlurRadius="19.8"/>
+            </DataGrid.Effect>
+
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="{x:Type Control}">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+
+        </DataGrid>
+        <MediaElement x:Name="me_slideshow" HorizontalAlignment="Left" Height="726" Margin="1006,44,0,0" VerticalAlignment="Top" Width="878" MediaEnded="me_slideshow_MediaEnded">
+            <MediaElement.Effect>
+                <DropShadowEffect BlurRadius="19"/>
+            </MediaElement.Effect>
+        </MediaElement>
+
+    </Grid>
+</Window>
