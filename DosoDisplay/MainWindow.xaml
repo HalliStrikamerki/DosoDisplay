@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DosoDisplay"
         mc:Ignorable="d"
-        Title="MainWindow" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowState="Maximized" Height="1024" Width="1920">
-    <Grid Background="#FF737373">
-        <Image Margin="-10,817,10,100" Source="logo2.jpg" Stretch="Fill"/>
+        Title="MainWindow" WindowStyle="None"  WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowState="Maximized" Height="1024" Width="1920">
+
+        <Grid Background="#FF737373">
+        <Image Margin="-10,87,0,0" Source="logo2.jpg" Stretch="Fill" Height="107" VerticalAlignment="Top"/>
         <DataGrid x:Name="GridViewListDoso" Margin="50,44,949,66" BorderBrush="#FF979797" Background="#FFD8D8D8" BorderThickness="5" VerticalGridLinesBrush="#FF6C6C6C" HorizontalGridLinesBrush="#FF9C5252" AlternatingRowBackground="PowderBlue" AlternationCount="1" IsHitTestVisible="True" IsTextSearchEnabled="True" FontSize="30" IsReadOnly="True" FontFamily="Arial" >
             <DataGrid.Effect>
                 <DropShadowEffect BlurRadius="19.8"/>
@@ -19,12 +20,19 @@
                 </Style>
             </DataGrid.ColumnHeaderStyle>
 
+            
+                
+
         </DataGrid>
-        <MediaElement x:Name="me_slideshow" HorizontalAlignment="Left" Height="726" Margin="1006,44,0,0" VerticalAlignment="Top" Width="878" MediaEnded="me_slideshow_MediaEnded">
+        <MediaElement x:Name="me_slideshow" HorizontalAlignment="Left" Height="718" Margin="1006,240,0,0" VerticalAlignment="Top" Width="878" MediaEnded="Me_slideshow_MediaEnded" MaxHeight="720">
             <MediaElement.Effect>
                 <DropShadowEffect BlurRadius="19"/>
             </MediaElement.Effect>
         </MediaElement>
 
     </Grid>
+
+
+    
+    
 </Window>

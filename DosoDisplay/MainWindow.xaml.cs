@@ -57,7 +57,7 @@ namespace DosoDisplay
             
         }
 
-        private void me_slideshow_MediaEnded(object sender, RoutedEventArgs e)
+        private void Me_slideshow_MediaEnded(object sender, RoutedEventArgs e)
         {
             curr++;
             if (curr >= max) { GetFileList(); }
@@ -77,11 +77,11 @@ namespace DosoDisplay
             InitializeComponent();
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(5);
-            timer.Tick += timer_Tick;
+            timer.Tick += Timer_Tick;
             timer.Start();
         }
 
-        void timer_Tick(object sender, EventArgs e)
+        void Timer_Tick(object sender, EventArgs e)
         {
             FillList();
         }
@@ -99,7 +99,7 @@ namespace DosoDisplay
                                                 "SET ANSI_WARNINGS OFF " +
                                                 "Select h.CustomerName as 'Viðskiptavinur                                     -', " +
                                                 "s.Text as 'Staða         -', " +
-                                                "cast(round(sum(l.Picked) / (sum(l.ToPick) + 0.001) * 100, 0) as int) as '%      -', " +
+                                                "cast(round(sum(l.Picked) / (sum(l.ToPick) + 0.001) * 100, 0) as int) as 'Framganga', " +
                                                 "MAX(l.Colour) as 'Litun' " +
                                                 "from " +                                              
                                                 "IceLink_Headers h inner join IceLink_Lines l on h.HeaderNo = l.HeaderNo " +
@@ -121,7 +121,7 @@ namespace DosoDisplay
             //command.Parameters.Add(new SqlParameter("BIN", "%" + inp_Bin.Text + "%"));
             //command.Parameters.Add(new SqlParameter("ITEMNAME", "%" + inp_ItemName.Text + "%"));
             //command.Parameters.Add(new SqlParameter("ITEMNO", "%" + inp_ItemNo.Text + "%"));
-
+            
 
             DataTable dt = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(command);
