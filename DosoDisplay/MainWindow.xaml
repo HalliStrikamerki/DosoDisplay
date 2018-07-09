@@ -9,7 +9,7 @@
 
         <Grid Background="#FF737373">
         <Image Margin="-10,87,0,0" Source="logo2.jpg" Stretch="Fill" Height="107" VerticalAlignment="Top"/>
-        <DataGrid x:Name="GridViewListDoso" Margin="50,44,949,66" BorderBrush="#FF979797" Background="#FFD8D8D8" BorderThickness="5" VerticalGridLinesBrush="#FF6C6C6C" HorizontalGridLinesBrush="#FF9C5252" AlternatingRowBackground="PowderBlue" AlternationCount="1" IsHitTestVisible="True" IsTextSearchEnabled="True" FontSize="30" IsReadOnly="True" FontFamily="Arial" >
+        <DataGrid x:Name="GridViewListDoso" Margin="50,50,949,66" BorderBrush="#FF979797" Background="#FFD8D8D8" BorderThickness="5" VerticalGridLinesBrush="#FF6C6C6C" HorizontalGridLinesBrush="#FF9C5252" AlternatingRowBackground="PowderBlue" AlternationCount="1" IsHitTestVisible="True" IsTextSearchEnabled="True" FontSize="30" IsReadOnly="True" FontFamily="Arial" >
             <DataGrid.Effect>
                 <DropShadowEffect BlurRadius="19.8"/>
             </DataGrid.Effect>
@@ -21,7 +21,8 @@
             </DataGrid.ColumnHeaderStyle>
 
             
-                
+
+
 
         </DataGrid>
         <MediaElement x:Name="me_slideshow" HorizontalAlignment="Left" Height="718" Margin="1006,240,0,0" VerticalAlignment="Top" Width="878" MediaEnded="Me_slideshow_MediaEnded" MaxHeight="720">

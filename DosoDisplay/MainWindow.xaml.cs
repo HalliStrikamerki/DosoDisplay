@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Threading;
 
 namespace DosoDisplay
@@ -29,11 +32,12 @@ namespace DosoDisplay
         public static string[] filePaths;
         public static int max;
         public static int curr;
-        
+        public static string Path = ConfigurationManager.AppSettings.Get("Path");
+
 
         public void GetFileList()
         {
-            filePaths = Directory.GetFiles(@"z:\");
+            filePaths = Directory.GetFiles(Path);
             max = filePaths.Length;
             curr = 0;
             //MessageBox.Show(filePaths[0].ToString());
@@ -87,26 +91,26 @@ namespace DosoDisplay
         }
 
 
-        
+
 
         public void FillList()
         {
 
-            //SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["IceLinkWareHouseConnectionString"].ToString());
-            SqlConnection conn = new SqlConnection(@"Data Source=localhost\sqlexpress;Initial Catalog=IceLinkWareHouse;Integrated Security=True");
+            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["IceLinkWareHouseConnectionString"].ToString());
+            //SqlConnection conn = new SqlConnection(@"Data Source=localhost\sqlexpress;Initial Catalog=IceLinkWareHouse;Integrated Security=True");
 
             SqlCommand command = new SqlCommand("SET ARITHABORT OFF " +
                                                 "SET ANSI_WARNINGS OFF " +
                                                 "Select h.CustomerName as 'Viðskiptavinur                                     -', " +
                                                 "s.Text as 'Staða         -', " +
-                                                "cast(round(sum(l.Picked) / (sum(l.ToPick) + 0.001) * 100, 0) as int) as 'Framganga', " +
+                                                "cast(round(sum(l.Picked) / (sum(l.ToPick) + 0.001) * 100, 0) as int) as 'Prósenta', " +
                                                 "MAX(l.Colour) as 'Litun' " +
-                                                "from " +                                              
+                                                "from " +
                                                 "IceLink_Headers h inner join IceLink_Lines l on h.HeaderNo = l.HeaderNo " +
                                                 "left outer join IceLink_StatusText s on h.Status = s.ID " +
                                                 "where " +
                                                 "type = 3 and " +
-                                                "Status < 3 and " +
+                                                "Status < 2 and " +
                                                 "Priority > 0 " +
                                                 "group by " +
                                                 "h.HeaderNo, " +
@@ -118,19 +122,14 @@ namespace DosoDisplay
                                                 "--order by h.DeliveryDate desc "
                                                 , conn);
 
-            //command.Parameters.Add(new SqlParameter("BIN", "%" + inp_Bin.Text + "%"));
-            //command.Parameters.Add(new SqlParameter("ITEMNAME", "%" + inp_ItemName.Text + "%"));
-            //command.Parameters.Add(new SqlParameter("ITEMNO", "%" + inp_ItemNo.Text + "%"));
+
+                DataTable dt = new DataTable();
+                SqlDataAdapter adapter = new SqlDataAdapter(command);
+                adapter.Fill(dt);
+                this.GridViewListDoso.ItemsSource = dt.DefaultView;
+
+
             
-
-            DataTable dt = new DataTable();
-            SqlDataAdapter adapter = new SqlDataAdapter(command);
-            adapter.Fill(dt);
-            this.GridViewListDoso.ItemsSource = dt.AsDataView();
-
-
         }
-
-       
     }
 }
