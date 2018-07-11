@@ -29,6 +29,14 @@ namespace DosoDisplay
             List_Timer();
         }
 
+        public class Customer
+        {
+            public string CustomerName { get; set; }
+            public string status { get; set; }
+            public string Color { get; set; }
+
+        }
+
         public static string[] filePaths;
         public static int max;
         public static int curr;
@@ -43,7 +51,7 @@ namespace DosoDisplay
             //MessageBox.Show(filePaths[0].ToString());
         }
 
-       
+
         public void Slideshow()
         {
 
@@ -56,9 +64,9 @@ namespace DosoDisplay
                 me_slideshow.LoadedBehavior = System.Windows.Controls.MediaState.Manual;
                 me_slideshow.Play();
             }
-            catch (Exception) {  }
-           
-            
+            catch (Exception) { }
+
+
         }
 
         private void Me_slideshow_MediaEnded(object sender, RoutedEventArgs e)
@@ -70,13 +78,13 @@ namespace DosoDisplay
             {
                 me_slideshow.Source = new Uri(filePaths[curr]);
                 me_slideshow.LoadedBehavior = System.Windows.Controls.MediaState.Manual;
-                
+
                 me_slideshow.Play();
             }
             catch (Exception) { Slideshow(); }
         }
 
-            public void List_Timer()
+        public void List_Timer()
         {
             InitializeComponent();
             DispatcherTimer timer = new DispatcherTimer();
@@ -102,8 +110,8 @@ namespace DosoDisplay
             SqlCommand command = new SqlCommand("SET ARITHABORT OFF " +
                                                 "SET ANSI_WARNINGS OFF " +
                                                 "Select h.CustomerName as 'Viðskiptavinur                                     -', " +
-                                                "s.Text as 'Staða         -', " +
-                                                "cast(round(sum(l.Picked) / (sum(l.ToPick) + 0.001) * 100, 0) as int) as 'Prósenta', " +
+                                                //"s.Text as 'Staða         -', " +
+                                                "cast(round(sum(l.Picked) / (sum(l.ToPick) + 0.001) * 100, 0) as int) as 'Status', " +
                                                 "MAX(l.Colour) as 'Litun' " +
                                                 "from " +
                                                 "IceLink_Headers h inner join IceLink_Lines l on h.HeaderNo = l.HeaderNo " +
@@ -119,17 +127,54 @@ namespace DosoDisplay
                                                 "h.Status, " +
                                                 "h.DeliveryDate " +
                                                 "--l.Colour " +
-                                                "--order by h.DeliveryDate desc "
+                                                "order by h.HeaderNo "
                                                 , conn);
 
+            GridViewListDoso.Items.Clear();
+            conn.Open();
+            SqlDataReader reader = command.ExecuteReader();
 
-                DataTable dt = new DataTable();
-                SqlDataAdapter adapter = new SqlDataAdapter(command);
-                adapter.Fill(dt);
-                this.GridViewListDoso.ItemsSource = dt.DefaultView;
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Customer c = new Customer();
+
+                    c.CustomerName = reader[0].ToString();
+
+                    
 
 
-            
+
+                    if (reader[1].ToString() == "0") { c.status = "Í bið";}
+                    else if (reader[1].ToString() == "100") { c.status = "Lokið"; }
+                    else{c.status = "Tiltekt " + reader[1].ToString()+"%";}
+                
+                    if (reader[2].ToString() == "0") { c.Color = ""; }
+                    else { c.Color = "X"; }
+
+                    //if (c.CustomerName.Contains("Slippfélagið")) { }
+                    //else { GridViewListDoso.Items.Add(c); }
+
+                    GridViewListDoso.Items.Add(c);
+
+                }
+            }
+            conn.Close();
+        
+
+            /*
+            DataTable dt = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(command);
+            adapter.Fill(dt);
+            this.GridViewListDoso.ItemsSource = dt.DefaultView;
+            */
+
+
+
+
+
+
         }
     }
 }

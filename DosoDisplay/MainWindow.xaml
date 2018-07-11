@@ -8,8 +8,48 @@
         Title="MainWindow" WindowStyle="None"  WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowState="Maximized" Height="1024" Width="1920">
 
         <Grid Background="#FF737373">
+            
         <Image Margin="-10,87,0,0" Source="logo2.jpg" Stretch="Fill" Height="107" VerticalAlignment="Top"/>
-        <DataGrid x:Name="GridViewListDoso" Margin="50,50,949,66" BorderBrush="#FF979797" Background="#FFD8D8D8" BorderThickness="5" VerticalGridLinesBrush="#FF6C6C6C" HorizontalGridLinesBrush="#FF9C5252" AlternatingRowBackground="PowderBlue" AlternationCount="1" IsHitTestVisible="True" IsTextSearchEnabled="True" FontSize="30" IsReadOnly="True" FontFamily="Arial" >
+
+       
+
+        <DataGrid x:Name="GridViewListDoso"  Margin="50,50,949,66" BorderBrush="#FF979797" Background="#FFD8D8D8" BorderThickness="5" VerticalGridLinesBrush="#FF6C6C6C" HorizontalGridLinesBrush="#FF9C5252" AlternatingRowBackground="PowderBlue" AlternationCount="1" IsHitTestVisible="True" IsTextSearchEnabled="True" FontSize="30" IsReadOnly="True" FontFamily="Arial" ItemsSource="{Binding Customer}">
+
+            
+
+            <DataGrid.Columns>
+                
+                <DataGridTextColumn Header="Viðskiptavinur"  Width="620" Binding="{Binding CustomerName}"/>
+
+                <DataGridTextColumn Header="Staða" Width="200"  Binding="{Binding status}" >
+                    <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                    </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+
+
+                <DataGridTextColumn Header="Litun" Binding="{Binding Color}">
+                    
+                     <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn> 
+
+                <!-- <DataGridCheckBoxColumn Header="Litun" Binding="{Binding Color}" Width="Auto" >
+                    
+                </DataGridCheckBoxColumn> -->
+
+            </DataGrid.Columns>
+
+
+
+
             <DataGrid.Effect>
                 <DropShadowEffect BlurRadius="19.8"/>
             </DataGrid.Effect>
@@ -20,11 +60,8 @@
                 </Style>
             </DataGrid.ColumnHeaderStyle>
 
-            
-
-
-
         </DataGrid>
+                                   
         <MediaElement x:Name="me_slideshow" HorizontalAlignment="Left" Height="718" Margin="1006,240,0,0" VerticalAlignment="Top" Width="878" MediaEnded="Me_slideshow_MediaEnded" MaxHeight="720">
             <MediaElement.Effect>
                 <DropShadowEffect BlurRadius="19"/>
