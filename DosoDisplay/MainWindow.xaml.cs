@@ -27,7 +27,6 @@ namespace DosoDisplay
             Slideshow();
 
             List_Timer();
-
            
         }
 
@@ -36,18 +35,17 @@ namespace DosoDisplay
             public string CustomerName { get; set; }
             public string Status { get; set; }
             public string Color { get; set; }
-
         }
+
 
         public static string[] filePaths;
         public static int max;
         public static int curr;
         public static string Path = ConfigurationManager.AppSettings.Get("Path");
-
+        public static string Slipp = ConfigurationManager.AppSettings.Get("Slipp");
 
         public void GetFileList()
-        {
-            
+        {          
             filePaths = Directory.GetFiles(Path);
             max = filePaths.Length;
             curr = 0;
@@ -57,8 +55,8 @@ namespace DosoDisplay
 
         public void Slideshow()
         {
-
             curr++;
+
             if (curr >= max) { GetFileList(); }
 
             try
@@ -107,7 +105,7 @@ namespace DosoDisplay
             SqlCommand command = new SqlCommand("SET ARITHABORT OFF " +
                                                 "SET ANSI_WARNINGS OFF " +
                                                 "Select h.CustomerName as 'Viðskiptavinur                                     -', " +
-                                                //"s.Text as 'Staða         -', " +
+                                                "h.status, " +
                                                 "cast(round(sum(l.Picked) / (sum(l.ToPick) + 0.001) * 100, 0) as int) as 'Status', " +
                                                 "MAX(l.Colour) as 'Litun' " +
                                                 "from " +
@@ -116,7 +114,7 @@ namespace DosoDisplay
                                                 "where " +
                                                 "type = 3 and " +
                                                 "Status < 2 and " +
-                                                "Priority > 0 " +
+                                                "Priority = 1 " +
                                                 "group by " +
                                                 "h.HeaderNo, " +
                                                 "h.CustomerName, " +
@@ -143,17 +141,21 @@ namespace DosoDisplay
 
 
 
-                    if (reader[1].ToString() == "0") { c.Status = "Í bið";}
-                    else if (reader[1].ToString() == "100") { c.Status = "Lokið"; }
-                    else{c.Status = "Tiltekt " + reader[1].ToString()+"%";}
+                    if (reader[2].ToString() == "0" && reader[1].ToString() == "0") { c.Status = "Ekki hafin";}
+                    else if (reader[2].ToString() == "100") { c.Status = "Lokið"; }
+                    else{c.Status = "" + reader[2].ToString()+"%";}
                 
-                    if (reader[2].ToString() == "0") { c.Color = ""; }
-                    else { c.Color = "X"; }
+                    if (reader[3].ToString() == "0") { c.Color = ""; }
+                    else { c.Color = "Já"; }
 
-                    //if (c.CustomerName.Contains("Slippfélagið")) { }
-                    //else { GridViewListDoso.Items.Add(c); }
+                    if (Slipp == "1")
+                    {
+                        if (c.CustomerName.Contains("Slippfélagið")) { }
+                        else { GridViewListDoso.Items.Add(c); }
+                    }
+                    else { GridViewListDoso.Items.Add(c); }
 
-                    GridViewListDoso.Items.Add(c);
+                    
 
                 }
             }

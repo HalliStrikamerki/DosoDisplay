@@ -13,25 +13,27 @@
 
        
 
-        <DataGrid x:Name="GridViewListDoso"  Margin="50,50,949,66" BorderBrush="#FF979797" Background="#FFD8D8D8" BorderThickness="5" VerticalGridLinesBrush="#FF6C6C6C" HorizontalGridLinesBrush="#FF9C5252" AlternatingRowBackground="PowderBlue" AlternationCount="1" IsHitTestVisible="True" IsTextSearchEnabled="True" FontSize="30" IsReadOnly="True" FontFamily="Arial" ItemsSource="{Binding Customer}">
+        <DataGrid x:Name="GridViewListDoso"  Margin="50,50,949,66" BorderBrush="#FF979797" Background="#FFD8D8D8" BorderThickness="5" VerticalGridLinesBrush="#FF6C6C6C" HorizontalGridLinesBrush="#FF9C5252" AlternatingRowBackground="PowderBlue" AlternationCount="1" IsHitTestVisible="True" IsTextSearchEnabled="True" FontSize="30" IsReadOnly="True" FontFamily="Arial" ItemsSource="{Binding Customer}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}">
 
             
 
             <DataGrid.Columns>
                 
-                <DataGridTextColumn Header="Viðskiptavinur"  Width="620" Binding="{Binding CustomerName}"/>
+                <DataGridTextColumn Header="Viðskiptavinur"  Width="570" Binding="{Binding CustomerName}" Foreground="Black" />
 
-                <DataGridTextColumn Header="Staða" Width="200"  Binding="{Binding Status}" >
+                <DataGridTextColumn Header="Staða tiltektar" Width="250"  Binding="{Binding Status}" Foreground="Black" >
+
                     <DataGridTextColumn.ElementStyle>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="HorizontalAlignment" Value="Center" />
-                    </Style>
+
+                        </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
 
 
 
-                <DataGridTextColumn Header="Litun" Binding="{Binding Color}">
+                <DataGridTextColumn Header="Litun" Binding="{Binding Color}" Foreground="Black">
                     
                      <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
