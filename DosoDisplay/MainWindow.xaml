@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DosoDisplay"
         mc:Ignorable="d"
-        Title="MainWindow" WindowStyle="None"  WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowState="Maximized" Height="1024" Width="1920">
+        Title="MainWindow" WindowStyle="None"  WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowState="Maximized" Height="1024" Width="1920" KeyUp="Window_KeyUp">
 
         <Grid Background="#FF737373">
             
@@ -21,7 +21,7 @@
                 
                 <DataGridTextColumn Header="Viðskiptavinur"  Width="620" Binding="{Binding CustomerName}"/>
 
-                <DataGridTextColumn Header="Staða" Width="200"  Binding="{Binding status}" >
+                <DataGridTextColumn Header="Staða" Width="200"  Binding="{Binding Status}" >
                     <DataGridTextColumn.ElementStyle>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -62,7 +62,7 @@
 
         </DataGrid>
                                    
-        <MediaElement x:Name="me_slideshow" HorizontalAlignment="Left" Height="718" Margin="1006,240,0,0" VerticalAlignment="Top" Width="878" MediaEnded="Me_slideshow_MediaEnded" MaxHeight="720">
+        <MediaElement x:Name="me_slideshow" HorizontalAlignment="Left" Height="718" Margin="1006,240,0,0" VerticalAlignment="Top" Width="878" MediaEnded="Me_slideshow_MediaEnded" MaxHeight="720" MediaFailed="Me_slideshow_MediaFailed" SpeedRatio="1" >
             <MediaElement.Effect>
                 <DropShadowEffect BlurRadius="19"/>
             </MediaElement.Effect>

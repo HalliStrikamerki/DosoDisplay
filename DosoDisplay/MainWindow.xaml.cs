@@ -27,12 +27,14 @@ namespace DosoDisplay
             Slideshow();
 
             List_Timer();
+
+           
         }
 
         public class Customer
         {
             public string CustomerName { get; set; }
-            public string status { get; set; }
+            public string Status { get; set; }
             public string Color { get; set; }
 
         }
@@ -45,6 +47,7 @@ namespace DosoDisplay
 
         public void GetFileList()
         {
+            
             filePaths = Directory.GetFiles(Path);
             max = filePaths.Length;
             curr = 0;
@@ -71,17 +74,8 @@ namespace DosoDisplay
 
         private void Me_slideshow_MediaEnded(object sender, RoutedEventArgs e)
         {
-            curr++;
-            if (curr >= max) { GetFileList(); }
-            //me_slideshow.Source = new Uri(@"c:\test\2.mp4");
-            try
-            {
-                me_slideshow.Source = new Uri(filePaths[curr]);
-                me_slideshow.LoadedBehavior = System.Windows.Controls.MediaState.Manual;
-
-                me_slideshow.Play();
-            }
-            catch (Exception) { Slideshow(); }
+           
+            MediaPlay();
         }
 
         public void List_Timer()
@@ -93,11 +87,14 @@ namespace DosoDisplay
             timer.Start();
         }
 
+       
+
         void Timer_Tick(object sender, EventArgs e)
         {
             FillList();
         }
 
+        
 
 
 
@@ -146,9 +143,9 @@ namespace DosoDisplay
 
 
 
-                    if (reader[1].ToString() == "0") { c.status = "Í bið";}
-                    else if (reader[1].ToString() == "100") { c.status = "Lokið"; }
-                    else{c.status = "Tiltekt " + reader[1].ToString()+"%";}
+                    if (reader[1].ToString() == "0") { c.Status = "Í bið";}
+                    else if (reader[1].ToString() == "100") { c.Status = "Lokið"; }
+                    else{c.Status = "Tiltekt " + reader[1].ToString()+"%";}
                 
                     if (reader[2].ToString() == "0") { c.Color = ""; }
                     else { c.Color = "X"; }
@@ -174,6 +171,41 @@ namespace DosoDisplay
 
 
 
+
+        }
+
+        private void Me_slideshow_MediaFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            MediaPlay();
+        }
+
+        private void MediaPlay()
+        {
+            
+
+            curr++;
+            if (curr >= max) { GetFileList(); }
+            try
+            {
+                me_slideshow.Source = new Uri(filePaths[curr]);
+                me_slideshow.LoadedBehavior = System.Windows.Controls.MediaState.Manual;
+                me_slideshow.Play();
+                
+                
+              
+            }
+            catch (Exception) { Slideshow(); }
+
+        }
+
+        private void Window_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            
+            if (e.Key == System.Windows.Input.Key.Escape)
+            {
+
+                Application.Current.Shutdown();
+            }
 
         }
     }
