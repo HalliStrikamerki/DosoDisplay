@@ -7,6 +7,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace DosoDisplay
@@ -20,14 +22,22 @@ namespace DosoDisplay
         {
             InitializeComponent();
 
+            this.Cursor = Cursors.None;
+
             FillList();
 
             GetFileList();
 
-            Slideshow();
+            //Slideshow();
+
+            changeImage();
+            Thread.Sleep(1000);
+            changeImage();
 
             List_Timer();
-           
+
+            Image_Timer();
+
         }
 
         public class Customer
@@ -37,21 +47,60 @@ namespace DosoDisplay
             public string Color { get; set; }
         }
 
-
         public static string[] filePaths;
         public static int max;
         public static int curr;
+     
         public static string Path = ConfigurationManager.AppSettings.Get("Path");
         public static string Slipp = ConfigurationManager.AppSettings.Get("Slipp");
+        public static string ImageTime = ConfigurationManager.AppSettings.Get("ImageTime");
+        
+        public void changeImage()
+        {
+            curr++;
+            if (curr >= max) { GetFileList(); }
 
-        public void GetFileList()
-        {          
-            filePaths = Directory.GetFiles(Path);
-            max = filePaths.Length;
-            curr = 0;
-            //MessageBox.Show(filePaths[0].ToString());
+            try
+            {
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                image.UriSource = new Uri(filePaths[curr], UriKind.Relative);
+                image.CacheOption = BitmapCacheOption.OnLoad;              
+                myImage.Width = ImageGrid.Width;
+                myImage.Height = ImageGrid.Height;
+                image.EndInit();
+
+                myImage.Source = image;
+                               
+            }
+            catch (Exception) { }
         }
 
+        public void Image_Timer()
+        {
+            InitializeComponent();
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(int.Parse(ImageTime));
+            timer.Tick += image_Tick;
+            timer.Start();
+        }
+
+        void image_Tick(object sender, EventArgs e)
+        {
+            changeImage();
+        }
+
+        public void GetFileList()
+        {
+            try
+            {
+                filePaths = Directory.GetFiles(Path);
+                max = filePaths.Length;
+                curr = 0;
+                //MessageBox.Show(filePaths[0].ToString());
+            }
+            catch (Exception) { }
+        }
 
         public void Slideshow()
         {
@@ -85,16 +134,10 @@ namespace DosoDisplay
             timer.Start();
         }
 
-       
-
         void Timer_Tick(object sender, EventArgs e)
         {
             FillList();
         }
-
-        
-
-
 
         public void FillList()
         {
@@ -142,7 +185,7 @@ namespace DosoDisplay
 
 
                     if (reader[2].ToString() == "0" && reader[1].ToString() == "0") { c.Status = "Ekki hafin";}
-                    else if (reader[2].ToString() == "100") { c.Status = "Lokið"; }
+                    else if (reader[2].ToString() == "100") { c.Status = "Í afhendingu"; }
                     else{c.Status = "" + reader[2].ToString()+"%";}
                 
                     if (reader[3].ToString() == "0") { c.Color = ""; }
@@ -160,19 +203,6 @@ namespace DosoDisplay
                 }
             }
             conn.Close();
-        
-
-            /*
-            DataTable dt = new DataTable();
-            SqlDataAdapter adapter = new SqlDataAdapter(command);
-            adapter.Fill(dt);
-            this.GridViewListDoso.ItemsSource = dt.DefaultView;
-            */
-
-
-
-
-
 
         }
 
@@ -194,6 +224,7 @@ namespace DosoDisplay
                 me_slideshow.Play();
                 
                 
+                
               
             }
             catch (Exception) { Slideshow(); }
@@ -210,5 +241,8 @@ namespace DosoDisplay
             }
 
         }
+
+   
     }
+
 }
