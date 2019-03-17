@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -24,19 +21,21 @@ namespace DosoDisplay
 
             this.Cursor = Cursors.None;
 
-            FillList();
+            FillList(); // Fylla á datasett á skjá
 
-            GetFileList();
+            GetFileList(); // skanna folder og fá lista yfir skrár (myndir)
 
             //Slideshow();
 
-            changeImage();
-            Thread.Sleep(1000);
+            //changeImage();
+            //Thread.Sleep(1000);
             changeImage();
 
-            List_Timer();
+            List_Timer();  //Timer fyrir Tiltektarlista
 
-            Image_Timer();
+            Image_Timer(); // Tímer fyrir slideshow
+
+            ShowWeather();
 
         }
 
@@ -50,11 +49,22 @@ namespace DosoDisplay
         public static string[] filePaths;
         public static int max;
         public static int curr;
+        public static int weathertimer;
      
         public static string Path = ConfigurationManager.AppSettings.Get("Path");
         public static string Slipp = ConfigurationManager.AppSettings.Get("Slipp");
         public static string ImageTime = ConfigurationManager.AppSettings.Get("ImageTime");
+
+        public void ShowWeather()
+        {
+            string curDir = Directory.GetCurrentDirectory();
+           
+            wb_Weather.Navigate(new Uri(string.Format("file:///{0}/HTMLPage1.html", curDir)));
+            
+        }
+            
         
+
         public void changeImage()
         {
             curr++;
@@ -83,6 +93,8 @@ namespace DosoDisplay
             timer.Interval = TimeSpan.FromSeconds(int.Parse(ImageTime));
             timer.Tick += image_Tick;
             timer.Start();
+
+            
         }
 
         void image_Tick(object sender, EventArgs e)
@@ -139,12 +151,21 @@ namespace DosoDisplay
             FillList();
         }
 
-        public void FillList()
+        public void FillList() //Listi yfir viðskiptavini og stöðu tiltektar
         {
+
+            weathertimer++;
+            if (weathertimer>360)
+            {
+                
+                weathertimer = 0;
+                wb_Weather.Refresh();
+            }
 
             SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["IceLinkWareHouseConnectionString"].ToString());
             //SqlConnection conn = new SqlConnection(@"Data Source=localhost\sqlexpress;Initial Catalog=IceLinkWareHouse;Integrated Security=True");
 
+            
             SqlCommand command = new SqlCommand("SET ARITHABORT OFF " +
                                                 "SET ANSI_WARNINGS OFF " +
                                                 "Select h.CustomerName as 'Viðskiptavinur                                     -', " +
@@ -167,6 +188,8 @@ namespace DosoDisplay
                                                 "--l.Colour " +
                                                 "order by h.HeaderNo "
                                                 , conn);
+                                                
+            
 
             GridViewListDoso.Items.Clear();
             conn.Open();
@@ -180,16 +203,27 @@ namespace DosoDisplay
 
                     c.CustomerName = reader[0].ToString();
 
-                    
-
-
-
+                    /*
                     if (reader[2].ToString() == "0" && reader[1].ToString() == "0") { c.Status = "Ekki hafin";}
                     else if (reader[2].ToString() == "100") { c.Status = "Í afhendingu"; }
+                    
                     else{c.Status = "" + reader[2].ToString()+"%";}
                 
                     if (reader[3].ToString() == "0") { c.Color = ""; }
+                    else { c.Color = "Já"; c.Status = "Í litun"; }
+                    */
+
+                    // Status
+                    if (reader[2].ToString() == "0" && reader[1].ToString() == "0") { c.Status = "Ekki hafin"; }
+                    else if (reader[2].ToString() == "100" && (reader[3].ToString() == "0")) { c.Status = "Í afhendingu"; }
+                    else if (reader[2].ToString() == "100" && (reader[3].ToString() == "1")) { c.Status = "Í litun"; }
+                    else { c.Status = "" + reader[2].ToString() + "%"; }
+
+                    // Litun eða ekki
+                    if (reader[3].ToString() == "0") { c.Color = ""; }
                     else { c.Color = "Já"; }
+
+                    
 
                     if (Slipp == "1")
                     {
@@ -204,7 +238,7 @@ namespace DosoDisplay
             }
             conn.Close();
 
-        }
+        } 
 
         private void Me_slideshow_MediaFailed(object sender, ExceptionRoutedEventArgs e)
         {

@@ -5,13 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DosoDisplay"
         mc:Ignorable="d"
-        Title="MainWindow" WindowStyle="None"  WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowState="Maximized" Height="1024" Width="1920" KeyUp="Window_KeyUp">
+        Title="MainWindow" WindowStyle="None"  WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowState="Maximized" Height="1080" Width="1920" KeyUp="Window_KeyUp">
 
     <Grid Background="#FF737373">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="89*"/>
+            <RowDefinition Height="290*"/>
+            <RowDefinition Height="161*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="491*"/>
+            <ColumnDefinition Width="469*"/>
 
-        <Image Margin="0,87,0,0" Source="logo2.jpg" Stretch="Fill" Height="107" VerticalAlignment="Top"/>
+        </Grid.ColumnDefinitions>
 
-        <DataGrid x:Name="GridViewListDoso"  Margin="50,50,949,66" BorderBrush="#FF979797" Background="#FF9B9B9B" BorderThickness="5" VerticalGridLinesBrush="#FF6C6C6C" HorizontalGridLinesBrush="#FF9C5252" AlternatingRowBackground="LightGray" AlternationCount="1" IsHitTestVisible="True" IsTextSearchEnabled="True" FontSize="30" IsReadOnly="True" FontFamily="Arial" ItemsSource="{Binding Customer}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" GridLinesVisibility="None">
+        <Image Margin="0,80,0,0" Source="logo2.jpg" Stretch="Fill" Grid.ColumnSpan="2"/>
+
+        <DataGrid x:Name="GridViewListDoso"  Margin="40,40,20,40" BorderBrush="#FF979797" Background="#FF9B9B9B" BorderThickness="5" VerticalGridLinesBrush="#FF6C6C6C" HorizontalGridLinesBrush="#FF9C5252" AlternatingRowBackground="LightGray" AlternationCount="1" IsHitTestVisible="True" IsTextSearchEnabled="True" FontSize="30" IsReadOnly="True" FontFamily="Arial" ItemsSource="{Binding Customer}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" GridLinesVisibility="None" Grid.RowSpan="3">
 
 
 
@@ -61,17 +71,33 @@
 
         </DataGrid>
 
-        <MediaElement x:Name="me_slideshow" HorizontalAlignment="Left" Height="20" Margin="1848,994,0,0" VerticalAlignment="Top" Width="62" MediaEnded="Me_slideshow_MediaEnded" MaxHeight="720" MediaFailed="Me_slideshow_MediaFailed" SpeedRatio="1" >
+        <MediaElement x:Name="me_slideshow" HorizontalAlignment="Left" Height="20" Margin="26,290,0,0" VerticalAlignment="Top" Width="62" MediaEnded="Me_slideshow_MediaEnded" MaxHeight="720" MediaFailed="Me_slideshow_MediaFailed" SpeedRatio="1" Grid.Column="1" Grid.Row="2" >
             <MediaElement.Effect>
                 <DropShadowEffect BlurRadius="19"/>
             </MediaElement.Effect>
         </MediaElement>
 
+        <Grid Margin="20,20,40,40" Background="DarkGray" Grid.Column="1" Grid.Row="2">
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="20"/>
+            </Grid.Effect>
 
-        <Grid x:Name="ImageGrid" HorizontalAlignment="Left" Height="748" Margin="994,210,0,0" VerticalAlignment="Top" Width="910">
+
+
+
+            <WebBrowser x:Name="wb_Weather"  Margin="5,5,5,5" Opacity="100" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
+
+
+        </Grid>
+
+        <Grid x:Name="ImageGrid" Margin="20,20,40,20" Grid.Column="1" Grid.Row="1">
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="20"/>
+            </Grid.Effect>
             <Image x:Name="myImage" RenderTransformOrigin="0.5,0.5" VerticalAlignment="center" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Center" Margin="0" Width="910" Height="748"/>
         </Grid>
-        <Label Content="* Athugið að litun getur tekið lengri tíma!" HorizontalAlignment="Left" Margin="83,920,0,54" VerticalAlignment="center" Width="858" FontFamily="Arial" FontSize="36" Background="#00000000" Foreground="White"/>
+        <Label Content="* Athugið að litun getur tekið lengri tíma!" HorizontalAlignment="Left" Margin="83,217,0,55" VerticalAlignment="center" Width="858" FontFamily="Arial" FontSize="36" Background="#00000000" Foreground="White" Height="50" Grid.Row="2"/>
+
 
 
     </Grid>
