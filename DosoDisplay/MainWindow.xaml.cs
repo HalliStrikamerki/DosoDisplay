@@ -21,14 +21,11 @@ namespace DosoDisplay
 
             this.Cursor = Cursors.None;
 
+          
             FillList(); // Fylla á datasett á skjá
-
+                      
             GetFileList(); // skanna folder og fá lista yfir skrár (myndir)
 
-            //Slideshow();
-
-            //changeImage();
-            //Thread.Sleep(1000);
             changeImage();
 
             List_Timer();  //Timer fyrir Tiltektarlista
@@ -58,13 +55,15 @@ namespace DosoDisplay
         public void ShowWeather()
         {
             string curDir = Directory.GetCurrentDirectory();
-           
-            wb_Weather.Navigate(new Uri(string.Format("file:///{0}/HTMLPage1.html", curDir)));
+
+            string path = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
             
+            //wb_Weather.Navigate(new Uri(string.Format("file:///{0}/HTMLPage1.html", curDir)));
+            //wb_Weather.Navigate(new Uri(string.Format("file://127.0.0.1/C$/Users/User/source/repos/DosoDisplay/DosoDisplay/bin/Debug/HTMLPage1.html", curDir)));
+            wb_Weather.Navigate(new Uri(string.Format("file://127.0.0.1/C$/HTMLPage1.html", curDir)));
+
         }
             
-        
-
         public void changeImage()
         {
             curr++;
@@ -99,7 +98,12 @@ namespace DosoDisplay
 
         void image_Tick(object sender, EventArgs e)
         {
-            changeImage();
+            try
+            {
+                changeImage();
+            }
+            catch (Exception) { }
+            //changeImage();
         }
 
         public void GetFileList()
@@ -111,7 +115,7 @@ namespace DosoDisplay
                 curr = 0;
                 //MessageBox.Show(filePaths[0].ToString());
             }
-            catch (Exception) { }
+            catch (Exception ex) { WritetoLog("Næ ekki að lesa skrár fyrir myndir"); }
         }
 
         public void Slideshow()
@@ -148,7 +152,12 @@ namespace DosoDisplay
 
         void Timer_Tick(object sender, EventArgs e)
         {
-            FillList();
+            try
+            {
+                FillList();
+            }
+            catch (Exception ex) { WritetoLog("Næ ekki að tengjast við sql grunn"); }
+            //FillList();
         }
 
         public void FillList() //Listi yfir viðskiptavini og stöðu tiltektar
@@ -162,6 +171,7 @@ namespace DosoDisplay
                 wb_Weather.Refresh();
             }
 
+            
             SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["IceLinkWareHouseConnectionString"].ToString());
             //SqlConnection conn = new SqlConnection(@"Data Source=localhost\sqlexpress;Initial Catalog=IceLinkWareHouse;Integrated Security=True");
 
@@ -193,7 +203,11 @@ namespace DosoDisplay
 
             GridViewListDoso.Items.Clear();
             conn.Open();
+            
+            
             SqlDataReader reader = command.ExecuteReader();
+           
+
 
             if (reader.HasRows)
             {
@@ -236,6 +250,9 @@ namespace DosoDisplay
 
                 }
             }
+
+            
+
             conn.Close();
 
         } 
@@ -276,6 +293,10 @@ namespace DosoDisplay
 
         }
 
+        public void WritetoLog (string error)
+        {
+            File.AppendAllText(Environment.CurrentDirectory + @"\ErrorLog.txt", DateTime.Now.ToString() + " - " + error + Environment.NewLine);
+        }
    
     }
 
