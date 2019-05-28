@@ -7,11 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" WindowStyle="None"  WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowState="Maximized" Height="1080" Width="1920" KeyUp="Window_KeyUp">
 
+
+
     <Grid Background="#FF737373">
         <Grid.RowDefinitions>
-            <RowDefinition Height="89*"/>
-            <RowDefinition Height="290*"/>
-            <RowDefinition Height="161*"/>
+            <RowDefinition Height="101*"/>
+            <RowDefinition Height="556*"/>
+            <RowDefinition Height="423*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="491*"/>
@@ -19,7 +21,7 @@
 
         </Grid.ColumnDefinitions>
 
-        <Image Margin="0,80,0,0" Source="logo2.jpg" Stretch="Fill" Grid.ColumnSpan="2"/>
+        <Image Margin="0,0,0,0" Source="logo2.jpg" Stretch="Fill" Grid.ColumnSpan="2"/>
 
         <DataGrid x:Name="GridViewListDoso"  Margin="40,40,20,40" BorderBrush="#FF979797" Background="#FF9B9B9B" BorderThickness="5" VerticalGridLinesBrush="#FF6C6C6C" HorizontalGridLinesBrush="#FF9C5252" AlternatingRowBackground="LightGray" AlternationCount="1" IsHitTestVisible="True" IsTextSearchEnabled="True" FontSize="30" IsReadOnly="True" FontFamily="Arial" ItemsSource="{Binding Customer}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" GridLinesVisibility="None" Grid.RowSpan="3">
 
@@ -38,6 +40,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
+
+
 
 
 
@@ -85,8 +89,7 @@
 
 
 
-            <WebBrowser x:Name="wb_Weather"  Margin="5,5,5,5" Opacity="100" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
-
+            <WebBrowser x:Name="wb_Weather"  Margin="5,5,5,5" Opacity="100" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden"  />
 
         </Grid>
 
@@ -96,7 +99,7 @@
             </Grid.Effect>
             <Image x:Name="myImage" RenderTransformOrigin="0.5,0.5" VerticalAlignment="center" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Center" Margin="0" Width="910" Height="748"/>
         </Grid>
-        <Label Content="* Athugið að litun getur tekið lengri tíma!" HorizontalAlignment="Left" Margin="83,217,0,55" VerticalAlignment="center" Width="858" FontFamily="Arial" FontSize="36" Background="#00000000" Foreground="White" Height="50" Grid.Row="2"/>
+        <Label Content="* Athugið að litun getur tekið lengri tíma!" HorizontalAlignment="Left" Margin="83,269,0,104" VerticalAlignment="center" Width="858" FontFamily="Arial" FontSize="36" Background="#00000000" Foreground="White" Height="50" Grid.Row="2"/>
 
 
 

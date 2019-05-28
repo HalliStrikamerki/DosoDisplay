@@ -13,6 +13,8 @@ namespace DosoDisplay
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// test 
+
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -61,6 +63,7 @@ namespace DosoDisplay
             //wb_Weather.Navigate(new Uri(string.Format("file:///{0}/HTMLPage1.html", curDir)));
             //wb_Weather.Navigate(new Uri(string.Format("file://127.0.0.1/C$/Users/User/source/repos/DosoDisplay/DosoDisplay/bin/Debug/HTMLPage1.html", curDir)));
             wb_Weather.Navigate(new Uri(string.Format("file://127.0.0.1/C$/HTMLPage1.html", curDir)));
+            
 
         }
             
